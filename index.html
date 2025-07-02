@@ -1,50 +1,192 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Museum Widget Test - GitHub Pages</title>
+    <title>Museum Widget Test</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 100%;
             margin: 0 auto;
-            padding: 20px;
-            background: #f5f5f5;
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        .test-section {
             background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #007cba;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #007cba;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        .test-section {
+            margin-bottom: 40px;
             padding: 20px;
-            margin: 20px 0;
+            border: 1px solid #ddd;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: #fafafa;
+        }
+
+        .widget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .single-widget {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .test-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid #007cba;
         }
     </style>
 </head>
+
 <body>
-    <h1>Museum-Digital Widget Test</h1>
-    
-    <div class="test-section">
-        <h2>Widget Test 1: Objekt ID 1230959</h2>
-        <div data-md-widget data-object-id="1230959"></div>
-    </div>
-    
-    <div class="test-section">
-        <h2>Widget Test 2: Objekt ID 1922298</h2>
-        <div data-md-widget data-object-id="1922298"></div>
-    </div>
-    
-    <div class="test-section">
-        <h2>Integration Code:</h2>
-        <pre><code>&lt;div data-md-widget data-object-id="1230959"&gt;&lt;/div&gt;
-&lt;script src="https://golden-sherbet-44fd68.netlify.app/museum-widget.umd.js"&gt;&lt;/script&gt;</code></pre>
+    <div class="container">
+        <h1>Museum Widget Test</h1>
+
+        <!-- Test 1: Einzelobjekte mit verschiedenen Themes -->
+        <div class="test-section">
+            <h2>Test 1: Einzelobjekte mit verschiedenen Themes</h2>
+            <div class="test-info">
+                <strong>Test:</strong> Objekt-Widgets mit verschiedenen Themes und Größen<br>
+                <strong>Erwartung:</strong> Objekte werden direkt angezeigt (Noch keine Detailsanzeige beim Anklicken)
+            </div>
+
+            <div class="widget-grid">
+                <div data-md-widget data-mode="object" data-object-id="127" data-theme="modern" data-width="350"
+                    data-font-size="16">
+                </div>
+
+                <div data-md-widget data-mode="object" data-object-id="456" data-theme="museum" data-width="300"
+                    data-font-size="14">
+                </div>
+
+                <div data-md-widget data-mode="object" data-object-id="789" data-theme="dark" data-width="400"
+                    data-font-size="18">
+                </div>
+            </div>
+        </div>
+
+        <!-- Test 2: Collection-Objects (Anklickbar), verschiedene Limits -->
+        <div class="test-section">
+            <h2>Test 2: Collection-Objects (Anklickbar) mit verschiedenen Objekte-Limits</h2>
+            <div class="test-info">
+                <strong>Test:</strong> Collection-Objects Widget mit Objekt-Anzeige, Collections mit verschiedenen
+                Limit-Einstellungen<br>
+                <strong>Erwartung:</strong> Objekte-Grid mit Pagination wird angezeigt, verschiedene Anzahl von Objekten
+                pro Seite
+            </div>
+
+            <div class="widget-grid">
+                <div data-md-widget data-mode="collection-objects" data-collection-id="1" data-theme="modern"
+                    data-width="280" data-limit="10">
+                    <!-- 10 Objekte pro Seite -->
+                </div>
+
+                <div data-md-widget data-mode="collection-objects" data-collection-id="2" data-theme="museum"
+                    data-width="280" data-limit="6">
+                    <!-- 6 Objekte pro Seite -->
+                </div>
+
+                <div data-md-widget data-mode="collection-objects" data-collection-id="3" data-theme="default"
+                    data-width="280" data-limit="2">
+                    <!-- 2 Objekte pro Seite -->
+                </div>
+            </div>
+
+            <div class="navigation-test">
+                <strong>Pagination Test:</strong> Klicke auf die Collections → Verschiedene Anzahl Objekte pro Seite
+            </div>
+        </div>
+
+        <!-- Test 3: Fehlerbehandlung -->
+        <div class="test-section">
+            <h2>Test 3: Fehlerbehandlung</h2>
+            <div class="test-info">
+                <strong>Test:</strong> Widgets mit fehlenden oder falschen IDs<br>
+                <strong>Erwartung:</strong> Klare Fehlermeldungen werden angezeigt
+            </div>
+
+            <div class="widget-grid">
+                <div data-md-widget data-mode="object" data-theme="modern">
+                    <!-- Fehlt: object-id -->
+                </div>
+
+                <div data-md-widget data-mode="collection" data-theme="museum">
+                    <!-- Fehlt: collection-id -->
+                </div>
+
+                <div data-md-widget data-mode="object" data-object-id="999999" data-theme="default">
+                    <!-- Objekt existiert nicht -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Test-Übersicht -->
+        <div class="test-section">
+            <h2>Test-Checkliste</h2>
+            <div style="background: #e8f5e8; padding: 20px; border-radius: 8px;">
+                <h3>Zu testende Funktionen:</h3>
+                <ul style="line-height: 1.8;">
+                    <li>Collection-Widgets laden und anzeigen</li>
+                    <li>Objekt-Widgets laden und anzeigen</li>
+                    <li>Collection-Click → Objekte in der selben Seite anzeigen</li>
+                    <li>Pagination funktioniert (verschiedene Limits)</li>
+                    <li>Verschiedene Themes (modern, museum, dark)</li>
+                    <li>Zurück-Button schließt die Collection-Objekt-Anzeige</li>
+                    <li>Fehlerbehandlung bei fehlenden IDs</li>
+                    <li>Responsive Design</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
-    <!-- Load Widget Script -->
+    <!-- Widget Script -->
     <script src="https://golden-sherbet-44fd68.netlify.app/museum-widget.umd.js"></script>
+
+    <!-- Debug Script -->
+    <script>
+        console.log("Museum Widget Test-Seite geladen");
+        console.log("Gefundene Widgets:", document.querySelectorAll('[data-md-widget]').length);
+
+        // Debug: Widget-Attribute loggen
+        document.querySelectorAll('[data-md-widget]').forEach((widget, index) => {
+            console.log(`Widget ${index + 1}:`, {
+                mode: widget.getAttribute('data-mode'),
+                objectId: widget.getAttribute('data-object-id'),
+                collectionId: widget.getAttribute('data-collection-id'),
+                theme: widget.getAttribute('data-theme'),
+                width: widget.getAttribute('data-width'),
+                limit: widget.getAttribute('data-limit')
+            });
+        });
+    </script>
 </body>
+
 </html>
