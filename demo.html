@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museum Widget Demo</title>
+    <link rel="stylesheet" crossorigin href="./dist/themes/modern.css">
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f1f3f4;
+            color: #2c3e50;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .demo-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            border-left: 4px solid #007cba;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-section h2 {
+            color: #007cba;
+            margin-top: 0;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .demo-section h3 {
+            color: #495057;
+            margin-top: 25px;
+            font-weight: 600;
+        }
+
+        .widget-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+            align-items: flex-start;
+        }
+
+        .size-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .code-block {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #495057;
+        }
+
+        .demo-label {
+            background-color: #007cba;
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .feature-list {
+            background-color: rgba(0, 124, 186, 0.05);
+            border: 1px solid rgba(0, 124, 186, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .feature-list ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .feature-list li {
+            margin-bottom: 6px;
+            color: #495057;
+        }
+
+        .feature-list strong {
+            color: #007cba;
+            font-weight: 600;
+        }
+
+        .feature-list code {
+            background-color: rgba(0, 124, 186, 0.1);
+            color: #007cba;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .widget-showcase {
+                flex-direction: column;
+            }
+
+            .size-demo {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="demo-container">
+        <h1 style="text-align: center; color: #007cba; margin-bottom: 40px; font-weight: 600; font-size: 2.5rem;">
+            Museum Widget Demo
+        </h1>
+
+        <!-- Einzelobjekt Widgets -->
+        <div class="demo-section">
+            <h2>1. Einzelobjekt Widget</h2>
+            <p>Zeigt ein einzelnes Museumsobjekt mit Bild, Titel und Institution an.</p>
+
+            <div class="feature-list">
+                <strong>Features:</strong>
+                <ul>
+                    <li>Responsive Schriftgrößen basierend auf Widget-Breite</li>
+                    <li>Automatisches Bild-Loading mit Fallback</li>
+                    <li>Klickbar für Detailansicht</li>
+                    <li>Loading-Zustand mit Spinner</li>
+                    <li>Fehlerbehandlung</li>
+                </ul>
+            </div>
+
+            <h3>Verschiedene Größen:</h3>
+            <div class="size-demo">
+                <div>
+                    <div class="demo-label">Klein (150px)</div>
+                    <div data-md-widget data-mode="object" data-object-id="127" data-width="150"></div>
+                </div>
+                <div>
+                    <div class="demo-label">Standard (300px)</div>
+                    <div data-md-widget data-mode="object" data-object-id="127" data-width="300"></div>
+                </div>
+                <div>
+                    <div class="demo-label">Groß (450px)</div>
+                    <div data-md-widget data-mode="object" data-object-id="127" data-width="450"></div>
+                </div>
+            </div>
+
+            <h3>HTML Code:</h3>
+            <div class="code-block">
+                &lt;!-- Klein --&gt;
+                &lt;div data-md-widget data-mode="object" data-object-id="127" data-width="150"&gt;&lt;/div&gt;
+                <br />
+                &lt;!-- Standard --&gt;
+                &lt;div data-md-widget data-mode="object" data-object-id="127" data-width="300"&gt;&lt;/div&gt;
+                <br />
+                &lt;!-- Groß --&gt;
+                &lt;div data-md-widget data-mode="object" data-object-id="127" data-width="450"&gt;&lt;/div&gt;
+            </div>
+        </div>
+
+        <!-- Collection Widgets -->
+        <div class="demo-section">
+            <h2>2. Collection Widget (mit integrierter Suche)</h2>
+            <p>Zeigt eine Sammlung mit allen Objekten, lokaler Suchfunktion und Pagination an.</p>
+
+            <div class="feature-list">
+                <strong>Features:</strong>
+                <ul>
+                    <li>Zwei Ansichten: Collection-Übersicht und Objektliste</li>
+                    <li>Lokale Echtzeitsuche (debounced)</li>
+                    <li>Suchvorschläge und Quick-Filter</li>
+                    <li>Pagination für große Collections</li>
+                    <li>Responsive Design mit dynamischen Schriftgrößen</li>
+                    <li>Detailansicht für einzelne Objekte</li>
+                </ul>
+            </div>
+
+            <h3>Collection-Übersicht:</h3>
+            <div class="widget-showcase">
+                <div>
+                    <div class="demo-label">Collection 2 (Klein)</div>
+                    <div data-md-widget data-mode="collection" data-collection-id="2" data-width="200" data-limit="8">
+                    </div>
+                </div>
+                <div>
+                    <div class="demo-label">Collection 1 (Standard)</div>
+                    <div data-md-widget data-mode="collection" data-collection-id="1" data-width="300" data-limit="12">
+                    </div>
+                </div>
+            </div>
+
+            <h3>HTML Code:</h3>
+            <div class="code-block">
+                &lt;!-- Collection Widget mit Suche --&gt;
+                &lt;div data-md-widget
+                data-mode="collection"
+                data-collection-id="2"
+                data-width="300"
+                data-limit="12"&gt;
+                &lt;/div&gt;
+
+                <br />
+
+                &lt;!-- Parameter Erklärung:
+                <br />
+                data-collection-id: ID der Collection
+                <br />
+                data-width: Breite der einzelnen Objekt-Widgets in der Liste
+                <br />
+                data-limit: Anzahl Objekte pro Seite (Standard: 24)
+                --&gt;
+            </div>
+        </div>
+
+        <!-- Verschiedene Objekte -->
+        <div class="demo-section">
+            <h2>3. Verschiedene Objekte</h2>
+            <p>Beispiele mit verschiedenen Objekttypen zur Demonstration der Vielseitigkeit.</p>
+
+            <div class="widget-showcase">
+                <div>
+                    <div class="demo-label">Objekt 1</div>
+                    <div data-md-widget data-mode="object" data-object-id="1" data-width="250"></div>
+                </div>
+                <div>
+                    <div class="demo-label">Objekt 153</div>
+                    <div data-md-widget data-mode="object" data-object-id="153" data-width="250"></div>
+                </div>
+                <div>
+                    <div class="demo-label">Objekt 265</div>
+                    <div data-md-widget data-mode="object" data-object-id="265" data-width="250"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error States Demo -->
+        <div class="demo-section">
+            <h2>4. Fehlerzustände - Nicht gefundene Objekte/Collections</h2>
+            <p>Demonstration wie die Widgets reagieren, wenn Objekte oder Collections nicht existieren.</p>
+
+            <div class="feature-list">
+                <strong>Getestete Fehlertypen:</strong>
+                <ul>
+                    <li><strong>404 - Nicht gefunden:</strong> Ungültige IDs zeigen "nicht gefunden" Meldung</li>
+                    <li><strong>Invalid Format:</strong> Buchstaben statt Zahlen als ID</li>
+                </ul>
+            </div>
+
+            <h3>Nicht existierende Objekte:</h3>
+            <div class="widget-showcase">
+                <div>
+                    <div class="demo-label">Ungültige ID: 999999</div>
+                    <div data-md-widget data-mode="object" data-object-id="999999" data-width="250"></div>
+                </div>
+                <div>
+                    <div class="demo-label">Buchstaben ID: "abc"</div>
+                    <div data-md-widget data-mode="object" data-object-id="abc" data-width="250"></div>
+                </div>
+                <div>
+                    <div class="demo-label">Ungültige ID: 999999</div>
+                    <div data-md-widget data-mode="collection" data-collection-id="999999" data-width="250"></div>
+                </div>
+                <div>
+                    <h3>HTML Code für Fehlertest:</h3>
+                    <div class="code-block">
+                        &lt;!-- Nicht existierende Objekt-ID --&gt;
+                        &lt;div data-md-widget data-mode="object" data-object-id="999999"
+                        data-width="250"&gt;&lt;/div&gt;
+                        <br />
+                        &lt;!-- Ungültige ID mit Buchstaben --&gt;
+                        &lt;div data-md-widget data-mode="object" data-object-id="abc" data-width="250"&gt;&lt;/div&gt;
+                        <br />
+                        &lt;!-- Nicht existierende Collection --&gt;
+                        &lt;div data-md-widget data-mode="collection" data-collection-id="999999"
+                        data-width="250"&gt;&lt;/div&gt;
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading States Demo -->
+            <div class="demo-section">
+                <h2>5. Loading-Zustände - Dauerhaftes Laden</h2>
+                <p>Demonstration der Loading-Animation und -Zustände während des Datenladens.</p>
+
+                <div class="feature-list">
+                    <strong>Loading Features:</strong>
+                    <ul>
+                        <li><strong>Spinner Animation:</strong> Rotierender Ladekreis</li>
+                        <li><strong>Loading Text:</strong> Informativer Text während des Ladens</li>
+                        <li><strong>Responsive Loading:</strong> Angepasst an Widget-Größe (*Noch Nicht implementiert*)
+                        </li>
+                    </ul>
+                </div>
+
+                <h3>Dauerhaft ladende Widgets:</h3>
+                <p><em>Diese Widgets werden permanent im Loading-Zustand bleiben zur Demonstration:</em></p>
+
+                <div class="widget-showcase">
+                    <div>
+                        <div class="demo-label">Loading Objekt</div>
+                        <div data-md-widget data-mode="object" data-object-id="loading-demo" data-width="300"></div>
+                    </div>
+                    <div>
+                        <div class="demo-label">Loading Collection</div>
+                        <div data-md-widget data-mode="collection" data-collection-id="loading-demo" data-width="250"
+                            data-limit="8"></div>
+                    </div>
+                </div>
+
+                <h3>HTML Code für Loading-Test:</h3>
+                <div class="code-block">
+                    &lt;!-- Dauerhaft ladendes Objekt-Widget --&gt;
+                    &lt;div data-md-widget data-mode="object" data-object-id="loading-demo"
+                    data-width="300"&gt;&lt;/div&gt;
+                    <br />
+                    &lt;!-- Dauerhaft ladende Collection --&gt;
+                    &lt;div data-md-widget data-mode="collection" data-collection-id="loading-demo"
+                    data-width="250"&gt;&lt;/div&gt;
+                    <br />
+                    &lt;!-- Hinweis: Diese speziellen IDs verursachen dauerhaftes Loading zur Demo --&gt;
+                </div>
+            </div>
+
+            <!-- Implementation Guide -->
+            <div class="demo-section">
+                <h2>7. So integrieren Sie die Widgets</h2>
+
+                <h3>Schritt 1: CSS und JavaScript einbinden</h3>
+                <div class="code-block">
+                    &lt;!DOCTYPE html&gt;
+                    <br />
+                    &lt;html&gt;
+                    <br />
+                    &lt;head&gt;
+                    <br />
+                    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+                    <br />
+                    &lt;!-- CSS Theme einbinden --&gt;
+                    <br />
+                    &lt;link rel="stylesheet" href="./LinkOfWidgetHostingPlattform/modern.css"&gt;
+                    <br />
+                    &lt;/head&gt;
+                    <br />
+                    &lt;body&gt;
+                    <br />
+                    &lt;!-- Ihre Widgets hier --&gt;
+                    <br />
+                    &lt;!-- JavaScript am Ende des Body --&gt;
+                    <br />
+                    &lt;script src="./LinkOfWidgetHostingPlattform/museum-widget.umd.js"&gt;&lt;/script&gt;
+                    <br />
+                    &lt;/body&gt;
+                    <br />
+                    &lt;/html&gt;
+                </div>
+
+                <h3>Schritt 2: Widget HTML hinzufügen</h3>
+                <div class="code-block">
+                    &lt;!-- Einzelobjekt Widget --&gt;
+                    <br />
+                    &lt;div data-md-widget
+                    data-mode="object"
+                    data-object-id="127"
+                    data-width="300"&gt;
+                    &lt;/div&gt;
+                    <br />
+                    &lt;!-- Collection Widget --&gt;
+                    <br />
+                    &lt;div data-md-widget
+                    data-mode="collection"
+                    data-collection-id="2"
+                    data-width="300"
+                    data-limit="12"&gt;
+                    &lt;/div&gt;
+                </div>
+
+                <h3>Verfügbare Parameter:</h3>
+                <div class="feature-list">
+                    <strong>Für Objekt-Widgets:</strong>
+                    <ul>
+                        <li><code>data-mode="object"</code> - Widget-Typ</li>
+                        <li><code>data-object-id="123"</code> - ID des Objekts</li>
+                        <li><code>data-width="300"</code> - Breite in Pixeln (optional, Standard: 300)</li>
+                    </ul>
+
+                    <strong>Für Collection-Widgets:</strong>
+                    <ul>
+                        <li><code>data-mode="collection"</code> - Widget-Typ</li>
+                        <li><code>data-collection-id="2"</code> - ID der Collection</li>
+                        <li><code>data-width="300"</code> - Breite der Objekte und Collection Widget (optional,
+                            Standard: 300)</li>
+                        <li><code>data-limit="12"</code> - Objekte pro Seite (optional, Standard: 24)</li>
+                    </ul>
+                </div>
+
+                <h3>Verfügbare Themes:</h3>
+                <div class="code-block">
+                    &lt;!-- Modern Theme (wie diese Demo) --&gt;
+                    <br />
+                    &lt;link rel="stylesheet" href="./LinkOfWidgetHostingPlattform/themes/modern.css"&gt;
+                    <br />
+                    &lt;!-- Dark Theme --&gt;
+                    <br />
+                    &lt;link rel="stylesheet" href="./LinkOfWidgetHostingPlattform/themes/dark.css"&gt;
+                    <br />
+                    &lt;!-- Standard Theme --&gt;
+                    <br />
+                    &lt;link rel="stylesheet" href="./LinkOfWidgetHostingPlattform/themes/default.css"&gt;
+                    <br />
+                    &lt;!-- Museum Theme (Probe von einem Farbenschema (Gold/Gelb) )--&gt;
+                    <br />
+                    &lt;link rel="stylesheet" href="./LinkOfWidgetHostingPlattform/themes/museum.css"&gt;
+                </div>
+            </div>
+
+            <!-- Features Overview -->
+            <div class="demo-section">
+                <h2>8. Feature-Übersicht</h2>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div class="feature-list">
+                        <strong>Objekt-Widget Features:</strong>
+                        <ul>
+                            <li>Automatisches Laden von museum-digital.org</li>
+                            <li>Responsive Bilder mit Fallback</li>
+                            <li>Dynamische Schriftgrößen</li>
+                            <li>Loading & Error States</li>
+                            <li>Click-to-Detail Funktionalität</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-list">
+                        <strong>Such-Widget Features:</strong>
+                        <ul>
+                            <li>Debounced Echtzeit-Suche (500ms)</li>
+                            <li>Suchvorschläge (Materialien, Techniken)</li>
+                            <li>Quick-Filter Buttons</li>
+                            <li>Enter-Taste für sofortige Suche</li>
+                            <li>Responsive Design</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-list">
+                        <strong>Collection-Widget Features:</strong>
+                        <ul>
+                            <li>Zwei-View System (Übersicht/Liste)</li>
+                            <li>Lokale Objektsuche</li>
+                            <li>Intelligente Pagination</li>
+                            <li>Loading aller Objekte</li>
+                            <li>Responsive Grid-Layout</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-list">
+                        <strong>Design Features:</strong>
+                        <ul>
+                            <li>4 vorgefertigte Themes</li>
+                            <li>Dark Mode Support</li>
+                            <li>Smooth Animationen</li>
+                            <li>Mobile-optimiert</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./dist/museum-widget.umd.js"></script>
+</body>
+
+</html>
