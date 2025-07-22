@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Museum Widget Demo</title>
-    <link rel="stylesheet" crossorigin href="https://golden-sherbet-44fd68.netlify.app/themes/modern.css">
+    <link rel="stylesheet" crossorigin href="./dist/themes/modern.css" id="theme-css">
     <style>
         body {
             font-family: sans-serif;
@@ -118,10 +118,133 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Theme Switcher Styles */
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            padding: 15px;
+            border: 1px solid #dee2e6;
+            min-width: 200px;
+        }
+
+        .theme-switcher h4 {
+            margin: 0 0 10px 0;
+            color: #007cba;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .theme-button {
+            width: 100%;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            background-color: #ffffff;
+            color: #495057;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .theme-button:last-child {
+            margin-bottom: 0;
+        }
+
+        .theme-button:hover {
+            border-color: #007cba;
+            background-color: rgba(0, 124, 186, 0.05);
+        }
+
+        .theme-button.active {
+            border-color: #007cba;
+            background-color: #007cba;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .theme-indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+
+        .theme-indicator.modern {
+            background: linear-gradient(45deg, #007cba, #0056b3);
+        }
+
+        .theme-indicator.dark {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+        }
+
+        .theme-indicator.default {
+            background: linear-gradient(45deg, #6c757d, #adb5bd);
+        }
+
+        .theme-indicator.museum {
+            background: linear-gradient(45deg, #d4af37, #b8860b);
+        }
+
+        .current-theme-info {
+            background-color: rgba(0, 124, 186, 0.1);
+            border: 1px solid rgba(0, 124, 186, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #007cba;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .theme-switcher {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 0 auto 20px auto;
+                max-width: 300px;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+        <h4>Theme Switcher</h4>
+        <button class="theme-button active" data-theme="modern">
+            Modern Theme
+            <div class="theme-indicator modern"></div>
+        </button>
+        <button class="theme-button" data-theme="dark">
+            Dark Theme
+            <div class="theme-indicator dark"></div>
+        </button>
+        <button class="theme-button" data-theme="default">
+            Default Theme
+            <div class="theme-indicator default"></div>
+        </button>
+        <button class="theme-button" data-theme="museum">
+            Museum Theme
+            <div class="theme-indicator museum"></div>
+        </button>
+        <div class="current-theme-info">
+            Aktuell: <strong id="current-theme-name">Modern Theme</strong>
+        </div>
+    </div>
+
     <div class="demo-container">
         <h1 style="text-align: center; color: #007cba; margin-bottom: 40px; font-weight: 600; font-size: 2.5rem;">
             Museum Widget Demo
@@ -407,7 +530,8 @@
                     </ul>
                 </div>
 
-                <h3>Verfügbare Themes:</h3>
+                <h3>Verfügbare Themes (Interaktiv):</h3>
+                <p><em>Nutzen Sie den Theme-Switcher oben rechts, um live zwischen den Themes zu wechseln!</em></p>
                 <div class="code-block">
                     &lt;!-- Modern Theme (wie diese Demo) --&gt;
                     <br />
@@ -479,7 +603,77 @@
         </div>
     </div>
 
-    <script src="https://golden-sherbet-44fd68.netlify.app/museum-widget.umd.js"></script>
+    <script src="./dist/museum-widget.umd.js"></script>
+
+    <script>
+        // Theme Switcher Functionality
+        const themes = {
+            'modern': {
+                name: 'Modern Theme',
+                file: './dist/themes/modern.css',
+                description: 'Sauberes, modernes Design mit Blau-Akzenten'
+            },
+            'dark': {
+                name: 'Dark Theme',
+                file: './dist/themes/dark.css',
+                description: 'Dunkles Design für bessere Lesbarkeit'
+            },
+            'default': {
+                name: 'Default Theme',
+                file: './dist/themes/default.css',
+                description: 'Standard-Design mit neutralen Farben'
+            },
+            'museum': {
+                name: 'Museum Theme',
+                file: './dist/themes/museum.css',
+                description: 'Elegantes Design mit Gold-Akzenten'
+            }
+        };
+
+        let currentTheme = 'modern';
+
+        function switchTheme(themeName) {
+            // CSS Link Update
+            const themeCss = document.getElementById('theme-css');
+            themeCss.href = themes[themeName].file;
+
+            // Update Active Button
+            document.querySelectorAll('.theme-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-theme="${themeName}"]`).classList.add('active');
+
+            // Update Current Theme Info
+            document.getElementById('current-theme-name').textContent = themes[themeName].name;
+
+            currentTheme = themeName;
+
+            // Add smooth transition effect
+            document.body.style.transition = 'all 0.3s ease';
+            setTimeout(() => {
+                document.body.style.transition = '';
+            }, 300);
+        }
+
+        function cycleTheme() {
+            const themeKeys = Object.keys(themes);
+            const currentIndex = themeKeys.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % themeKeys.length;
+            const nextTheme = themeKeys[nextIndex];
+            switchTheme(nextTheme);
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function () {
+            // Theme Button Click Events
+            document.querySelectorAll('.theme-button').forEach(button => {
+                button.addEventListener('click', function () {
+                    const themeName = this.getAttribute('data-theme');
+                    switchTheme(themeName);
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
