@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Museum Widget Demo</title>
-    <link rel="stylesheet" crossorigin href="https://golden-sherbet-44fd68.netlify.app/themes/modern.css" id="theme-css">
+    <link rel="stylesheet" crossorigin href="https://golden-sherbet-44fd68.netlify.app/themes/modern.css"
+        id="theme-css">
     <style>
         body {
             font-family: sans-serif;
@@ -607,7 +608,7 @@
 
     <script>
         // Theme Switcher Functionality
-       const themes = {
+        const themes = {
             'modern': {
                 name: 'Modern Theme',
                 file: 'https://golden-sherbet-44fd68.netlify.app/themes/modern.css',
@@ -653,6 +654,12 @@
             setTimeout(() => {
                 document.body.style.transition = '';
             }, 300);
+
+            // Force CSS reload by adding timestamp
+            const link = document.getElementById('theme-css');
+            const url = new URL(link.href);
+            url.searchParams.set('t', Date.now());
+            link.href = url.toString();
         }
 
         function cycleTheme() {
@@ -665,6 +672,9 @@
 
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function () {
+            // Automatisch Modern Theme beim Laden aktivieren
+            switchTheme('modern');
+
             // Theme Button Click Events
             document.querySelectorAll('.theme-button').forEach(button => {
                 button.addEventListener('click', function () {
