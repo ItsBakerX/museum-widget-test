@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Museum Widget Demo</title>
-    <link rel="stylesheet" crossorigin href="https://golden-sherbet-44fd68.netlify.app/themes/modern.css"
-        id="theme-css">
+    <link rel="stylesheet" href="https://golden-sherbet-44fd68.netlify.app/themes/modern.css" id="theme-css">
     <style>
         body {
             font-family: sans-serif;
@@ -343,7 +342,7 @@
                 <br />
                 data-collection-id: ID der Collection
                 <br />
-                data-width: Breite der einzelnen Objekt-Widgets in der Liste
+                data-width: Breite der einzelnen Objekt-Widgets in der Liste und der Collection-Übersicht
                 <br />
                 data-limit: Anzahl Objekte pro Seite (Standard: 24)
                 --&gt;
@@ -425,8 +424,6 @@
                     <ul>
                         <li><strong>Spinner Animation:</strong> Rotierender Ladekreis</li>
                         <li><strong>Loading Text:</strong> Informativer Text während des Ladens</li>
-                        <li><strong>Responsive Loading:</strong> Angepasst an Widget-Größe (*Noch Nicht implementiert*)
-                        </li>
                     </ul>
                 </div>
 
@@ -518,16 +515,15 @@
                     <ul>
                         <li><code>data-mode="object"</code> - Widget-Typ</li>
                         <li><code>data-object-id="123"</code> - ID des Objekts</li>
-                        <li><code>data-width="300"</code> - Breite in Pixeln (optional, Standard: 300)</li>
+                        <li><code>data-width="300"</code> - Breite in Pixeln</li>
                     </ul>
 
                     <strong>Für Collection-Widgets:</strong>
                     <ul>
                         <li><code>data-mode="collection"</code> - Widget-Typ</li>
                         <li><code>data-collection-id="2"</code> - ID der Collection</li>
-                        <li><code>data-width="300"</code> - Breite der Objekte und Collection Widget (optional,
-                            Standard: 300)</li>
-                        <li><code>data-limit="12"</code> - Objekte pro Seite (optional, Standard: 24)</li>
+                        <li><code>data-width="300"</code> - Breite der Objekte und Collection Widget</li>
+                        <li><code>data-limit="12"</code> - Objekte pro Seite</li>
                     </ul>
                 </div>
 
@@ -560,7 +556,7 @@
                     <div class="feature-list">
                         <strong>Objekt-Widget Features:</strong>
                         <ul>
-                            <li>Automatisches Laden von museum-digital.org</li>
+                            <li>Automatisches Laden von museum-digital</li>
                             <li>Responsive Bilder mit Fallback</li>
                             <li>Dynamische Schriftgrößen</li>
                             <li>Loading & Error States</li>
@@ -654,12 +650,6 @@
             setTimeout(() => {
                 document.body.style.transition = '';
             }, 300);
-
-            // Force CSS reload by adding timestamp
-            const link = document.getElementById('theme-css');
-            const url = new URL(link.href);
-            url.searchParams.set('t', Date.now());
-            link.href = url.toString();
         }
 
         function cycleTheme() {
@@ -672,9 +662,6 @@
 
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function () {
-            // Automatisch Modern Theme beim Laden aktivieren
-            switchTheme('modern');
-
             // Theme Button Click Events
             document.querySelectorAll('.theme-button').forEach(button => {
                 button.addEventListener('click', function () {
